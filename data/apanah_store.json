@@ -338,9 +338,9 @@
   ],
   "orders": [
     {
-      "id": "ord_1795446749765_fnhy",
-      "timestamp": "2026-11-23T15:12:29.765Z",
-      "displayTime": "08:42 pm",
+      "id": "ord_1795447189273_yiy1",
+      "timestamp": "2026-11-23T15:19:49.273Z",
+      "displayTime": "08:49 pm",
       "paymentMode": "UPI",
       "totalRevenue": 115,
       "totalCOGS": 23.31,
@@ -462,9 +462,9 @@
   ],
   "invoices": [
     {
-      "id": "bill_1795446749794_o8yu",
+      "id": "bill_1795447189321_4f3j",
       "vendorName": "Gultekdi Market Yard Wholesale Merchants",
-      "invoiceNumber": "MYP-8842-824",
+      "invoiceNumber": "MYP-8842-610",
       "invoiceDate": "2026-11-23",
       "subtotal": 6190,
       "taxAmount": 309.5,
@@ -473,7 +473,7 @@
       "status": "committed",
       "items": [
         {
-          "id": "item_cssz7",
+          "id": "item_uue8y",
           "inventoryId": "raw_urad_dal",
           "matchedInventoryName": "Urad Dal (Premium)",
           "name": "Urad Dal (Premium)",
@@ -484,7 +484,7 @@
           "isMatched": true
         },
         {
-          "id": "item_fmb4v",
+          "id": "item_u80ke",
           "inventoryId": "raw_cooking_oil",
           "matchedInventoryName": "Fortune Sunflower Oil",
           "name": "Fortune Sunflower Oil",
@@ -495,7 +495,7 @@
           "isMatched": true
         },
         {
-          "id": "item_9rm5g",
+          "id": "item_2uo0w",
           "inventoryId": "raw_rice_idli",
           "matchedInventoryName": "Kolam Idli Rice",
           "name": "Kolam Idli Rice",
@@ -506,7 +506,7 @@
           "isMatched": true
         }
       ],
-      "committedAt": "2026-11-23T15:12:29.802Z",
+      "committedAt": "2026-11-23T15:19:49.324Z",
       "committedItems": [
         {
           "inventoryId": "raw_urad_dal",
@@ -534,8 +534,8 @@
   ],
   "auditLogs": [
     {
-      "id": "audit_1795446749828_v7wo",
-      "timestamp": "2026-11-23T15:12:29.828Z",
+      "id": "audit_1795447189347_4ghd",
+      "timestamp": "2026-11-23T15:19:49.347Z",
       "dateFormatted": "23 Nov 2026",
       "auditor": "Shopkeeper Arun",
       "totalItemsAudited": 1,

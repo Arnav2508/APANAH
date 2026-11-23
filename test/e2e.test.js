@@ -1,5 +1,8 @@
 const assert = require('assert');
-const { app, server } = require('../server');
+let { app, server } = require('../server');
+if (!server) {
+  server = app.listen(0);
+}
 const { db } = require('../src/database');
 
 async function runTests() {

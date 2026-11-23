@@ -24,16 +24,17 @@ app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Export app for Vercel Serverless
-if (process.env.VERCEL) {
-  module.exports = app;
-} else {
-  const server = app.listen(PORT, () => {
+let server;
+if (!process.env.VERCEL && require.main === module) {
+  server = app.listen(PORT, () => {
     console.log(`====================================================`);
     console.log(`  APANAH: AI Back Office for Small Shops & MSMEs     `);
     console.log(`  President's Innovation Fund - Prototype Online     `);
     console.log(`  Listening at: http://localhost:${PORT}             `);
     console.log(`====================================================`);
   });
-  module.exports = { app, server };
 }
+
+module.exports = app;
+module.exports.app = app;
+module.exports.server = server;
