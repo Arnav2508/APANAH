@@ -1,0 +1,562 @@
+{
+  "merchant": {
+    "id": "merchant_pune_001",
+    "name": "Apanah Demo - Shree Ganesh Fast Food & Kirana",
+    "owner": "Arnav Ghatole & Arinjay Pawar",
+    "location": "Kothrud / Swargate, Pune",
+    "type": "Hybrid Food & Retail MSME",
+    "currency": "INR",
+    "symbol": "₹"
+  },
+  "inventory": [
+    {
+      "id": "raw_urad_dal",
+      "name": "Urad Dal (Premium)",
+      "category": "Grains & Pulses",
+      "type": "raw_material",
+      "currentStock": 42.9,
+      "unit": "kg",
+      "costPerUnit": 113.27,
+      "minThreshold": 5,
+      "supplier": "Gultekdi Market Yard Wholesalers"
+    },
+    {
+      "id": "raw_rice_idli",
+      "name": "Kolam Idli Rice",
+      "category": "Grains & Pulses",
+      "type": "raw_material",
+      "currentStock": 54,
+      "unit": "kg",
+      "costPerUnit": 47.44,
+      "minThreshold": 8,
+      "supplier": "Gultekdi Market Yard Wholesalers"
+    },
+    {
+      "id": "raw_cooking_oil",
+      "name": "Fortune Sunflower Oil",
+      "category": "Oils & Ghee",
+      "type": "raw_material",
+      "currentStock": 29.17,
+      "unit": "litre",
+      "costPerUnit": 133.46,
+      "minThreshold": 4,
+      "supplier": "Mahalaxmi Traders, Swargate"
+    },
+    {
+      "id": "raw_amul_milk",
+      "name": "Amul Taaza Milk",
+      "category": "Dairy",
+      "type": "raw_material",
+      "currentStock": 11.92,
+      "unit": "litre",
+      "costPerUnit": 54,
+      "minThreshold": 3,
+      "supplier": "Katraj Dairy Route Agent"
+    },
+    {
+      "id": "raw_matki_sprouts",
+      "name": "Sprouted Matki (Moath)",
+      "category": "Fresh Produce",
+      "type": "raw_material",
+      "currentStock": 9,
+      "unit": "kg",
+      "costPerUnit": 70,
+      "minThreshold": 3,
+      "supplier": "Gultekdi Mandi"
+    },
+    {
+      "id": "raw_poha",
+      "name": "Jad Poha (Thick)",
+      "category": "Grains & Pulses",
+      "type": "raw_material",
+      "currentStock": 15,
+      "unit": "kg",
+      "costPerUnit": 44,
+      "minThreshold": 5,
+      "supplier": "Gultekdi Market Yard Wholesalers"
+    },
+    {
+      "id": "raw_tea_leaves",
+      "name": "Wagh Bakri CTC Tea",
+      "category": "Beverages",
+      "type": "raw_material",
+      "currentStock": 4.493,
+      "unit": "kg",
+      "costPerUnit": 420,
+      "minThreshold": 1.5,
+      "supplier": "Poona Tea Depot"
+    },
+    {
+      "id": "raw_sugar",
+      "name": "Refined Sugar (M30)",
+      "category": "Pantry",
+      "type": "raw_material",
+      "currentStock": 21.988,
+      "unit": "kg",
+      "costPerUnit": 42,
+      "minThreshold": 5,
+      "supplier": "Gultekdi Market Yard Wholesalers"
+    },
+    {
+      "id": "raw_potatoes",
+      "name": "Pune Special Potatoes",
+      "category": "Fresh Produce",
+      "type": "raw_material",
+      "currentStock": 30,
+      "unit": "kg",
+      "costPerUnit": 28,
+      "minThreshold": 8,
+      "supplier": "Gultekdi Mandi"
+    },
+    {
+      "id": "raw_pav_buns",
+      "name": "Fresh Bakery Pav",
+      "category": "Bakery",
+      "type": "raw_material",
+      "currentStock": 80,
+      "unit": "pcs",
+      "costPerUnit": 2.5,
+      "minThreshold": 20,
+      "supplier": "Modern Pune Bakery"
+    },
+    {
+      "id": "raw_farsan",
+      "name": "Kolhapuri Kat Farsan",
+      "category": "Pantry",
+      "type": "raw_material",
+      "currentStock": 6.5,
+      "unit": "kg",
+      "costPerUnit": 140,
+      "minThreshold": 2,
+      "supplier": "Laxmi Farsan, Budhwar Peth"
+    },
+    {
+      "id": "sku_parle_g",
+      "name": "Parle-G Gold 100g",
+      "category": "Packaged Retail",
+      "type": "retail_sku",
+      "currentStock": 45,
+      "unit": "pack",
+      "costPerUnit": 8.5,
+      "sellingPrice": 10,
+      "minThreshold": 10,
+      "supplier": "Parle Agency Pune"
+    },
+    {
+      "id": "sku_amul_butter",
+      "name": "Amul Butter 100g",
+      "category": "Packaged Retail",
+      "type": "retail_sku",
+      "currentStock": 18,
+      "unit": "pack",
+      "costPerUnit": 52,
+      "sellingPrice": 58,
+      "minThreshold": 5,
+      "supplier": "Katraj Dairy Route Agent"
+    },
+    {
+      "id": "sku_thums_up",
+      "name": "Thums Up 250ml Bottle",
+      "category": "Packaged Retail",
+      "type": "retail_sku",
+      "currentStock": 32,
+      "unit": "bottle",
+      "costPerUnit": 16,
+      "sellingPrice": 20,
+      "minThreshold": 8,
+      "supplier": "Hindustan Coca-Cola Depot"
+    }
+  ],
+  "menu": [
+    {
+      "id": "menu_medu_vada",
+      "name": "Medu Vada (Plate of 2)",
+      "category": "Breakfast & Snacks",
+      "price": 50,
+      "description": "Crispy lentil fritters served with hot sambar and coconut chutney",
+      "recipe": [
+        {
+          "materialId": "raw_urad_dal",
+          "quantity": 0.05,
+          "unit": "kg"
+        },
+        {
+          "materialId": "raw_cooking_oil",
+          "quantity": 0.015,
+          "unit": "litre"
+        }
+      ]
+    },
+    {
+      "id": "menu_misal_pav",
+      "name": "Puneri Misal Pav (Special)",
+      "category": "Snacks & Meals",
+      "price": 80,
+      "description": "Fiery sprouted matki curry topped with farsan, served with 2 fresh pavs",
+      "recipe": [
+        {
+          "materialId": "raw_matki_sprouts",
+          "quantity": 0.12,
+          "unit": "kg"
+        },
+        {
+          "materialId": "raw_farsan",
+          "quantity": 0.035,
+          "unit": "kg"
+        },
+        {
+          "materialId": "raw_pav_buns",
+          "quantity": 2,
+          "unit": "pcs"
+        },
+        {
+          "materialId": "raw_cooking_oil",
+          "quantity": 0.015,
+          "unit": "litre"
+        }
+      ]
+    },
+    {
+      "id": "menu_kanda_poha",
+      "name": "Kanda Poha (Special)",
+      "category": "Breakfast & Snacks",
+      "price": 35,
+      "description": "Flattened rice cooked with onions, mustard, green chilies and peanuts",
+      "recipe": [
+        {
+          "materialId": "raw_poha",
+          "quantity": 0.075,
+          "unit": "kg"
+        },
+        {
+          "materialId": "raw_cooking_oil",
+          "quantity": 0.01,
+          "unit": "litre"
+        }
+      ]
+    },
+    {
+      "id": "menu_masala_dosa",
+      "name": "Butter Masala Dosa",
+      "category": "Breakfast & Snacks",
+      "price": 70,
+      "description": "Crispy fermented crepe with potato masala and dollop of butter",
+      "recipe": [
+        {
+          "materialId": "raw_rice_idli",
+          "quantity": 0.05,
+          "unit": "kg"
+        },
+        {
+          "materialId": "raw_urad_dal",
+          "quantity": 0.02,
+          "unit": "kg"
+        },
+        {
+          "materialId": "raw_potatoes",
+          "quantity": 0.08,
+          "unit": "kg"
+        },
+        {
+          "materialId": "raw_cooking_oil",
+          "quantity": 0.01,
+          "unit": "litre"
+        }
+      ]
+    },
+    {
+      "id": "menu_cutting_chai",
+      "name": "Special Cutting Chai",
+      "category": "Beverages",
+      "price": 15,
+      "description": "Cardamom & ginger infused strong Pune cutting tea",
+      "recipe": [
+        {
+          "materialId": "raw_amul_milk",
+          "quantity": 0.08,
+          "unit": "litre"
+        },
+        {
+          "materialId": "raw_tea_leaves",
+          "quantity": 0.007,
+          "unit": "kg"
+        },
+        {
+          "materialId": "raw_sugar",
+          "quantity": 0.012,
+          "unit": "kg"
+        }
+      ]
+    },
+    {
+      "id": "menu_filter_coffee",
+      "name": "Hot Filter Coffee",
+      "category": "Beverages",
+      "price": 25,
+      "description": "Authentic South Indian chicory coffee froth",
+      "recipe": [
+        {
+          "materialId": "raw_amul_milk",
+          "quantity": 0.12,
+          "unit": "litre"
+        },
+        {
+          "materialId": "raw_sugar",
+          "quantity": 0.015,
+          "unit": "kg"
+        }
+      ]
+    },
+    {
+      "id": "menu_parle_g",
+      "name": "Parle-G Gold 100g",
+      "category": "Packaged Retail",
+      "price": 10,
+      "description": "Direct Retail SKU",
+      "recipe": [
+        {
+          "materialId": "sku_parle_g",
+          "quantity": 1,
+          "unit": "pack"
+        }
+      ]
+    },
+    {
+      "id": "menu_thums_up",
+      "name": "Thums Up 250ml Bottle",
+      "category": "Packaged Retail",
+      "price": 20,
+      "description": "Chilled soft drink",
+      "recipe": [
+        {
+          "materialId": "sku_thums_up",
+          "quantity": 1,
+          "unit": "bottle"
+        }
+      ]
+    }
+  ],
+  "orders": [
+    {
+      "id": "ord_1795446749765_fnhy",
+      "timestamp": "2026-11-23T15:12:29.765Z",
+      "displayTime": "08:42 pm",
+      "paymentMode": "UPI",
+      "totalRevenue": 115,
+      "totalCOGS": 23.31,
+      "grossProfit": 91.69,
+      "marginPercent": 79.7,
+      "items": [
+        {
+          "menuItemId": "menu_medu_vada",
+          "name": "Medu Vada (Plate of 2)",
+          "category": "Breakfast & Snacks",
+          "quantity": 2,
+          "unitPrice": 50,
+          "subtotal": 100,
+          "cogs": 15.55,
+          "grossMargin": 84.45,
+          "marginPercentage": 84.5,
+          "recipeDepletions": [
+            {
+              "materialId": "raw_urad_dal",
+              "materialName": "Urad Dal (Premium)",
+              "unit": "kg",
+              "deductedQty": 0.1,
+              "ingredientCost": 11.5,
+              "priorStock": 18.5
+            },
+            {
+              "materialId": "raw_cooking_oil",
+              "materialName": "Fortune Sunflower Oil",
+              "unit": "litre",
+              "deductedQty": 0.03,
+              "ingredientCost": 4.05,
+              "priorStock": 14.2
+            }
+          ]
+        },
+        {
+          "menuItemId": "menu_cutting_chai",
+          "name": "Special Cutting Chai",
+          "category": "Beverages",
+          "quantity": 1,
+          "unitPrice": 15,
+          "subtotal": 15,
+          "cogs": 7.76,
+          "grossMargin": 7.24,
+          "marginPercentage": 48.3,
+          "recipeDepletions": [
+            {
+              "materialId": "raw_amul_milk",
+              "materialName": "Amul Taaza Milk",
+              "unit": "litre",
+              "deductedQty": 0.08,
+              "ingredientCost": 4.32,
+              "priorStock": 12
+            },
+            {
+              "materialId": "raw_tea_leaves",
+              "materialName": "Wagh Bakri CTC Tea",
+              "unit": "kg",
+              "deductedQty": 0.007,
+              "ingredientCost": 2.94,
+              "priorStock": 4.5
+            },
+            {
+              "materialId": "raw_sugar",
+              "materialName": "Refined Sugar (M30)",
+              "unit": "kg",
+              "deductedQty": 0.012,
+              "ingredientCost": 0.5,
+              "priorStock": 22
+            }
+          ]
+        }
+      ],
+      "allDepletions": [
+        {
+          "materialId": "raw_urad_dal",
+          "materialName": "Urad Dal (Premium)",
+          "unit": "kg",
+          "deductedQty": 0.1,
+          "ingredientCost": 11.5,
+          "priorStock": 18.5
+        },
+        {
+          "materialId": "raw_cooking_oil",
+          "materialName": "Fortune Sunflower Oil",
+          "unit": "litre",
+          "deductedQty": 0.03,
+          "ingredientCost": 4.05,
+          "priorStock": 14.2
+        },
+        {
+          "materialId": "raw_amul_milk",
+          "materialName": "Amul Taaza Milk",
+          "unit": "litre",
+          "deductedQty": 0.08,
+          "ingredientCost": 4.32,
+          "priorStock": 12
+        },
+        {
+          "materialId": "raw_tea_leaves",
+          "materialName": "Wagh Bakri CTC Tea",
+          "unit": "kg",
+          "deductedQty": 0.007,
+          "ingredientCost": 2.94,
+          "priorStock": 4.5
+        },
+        {
+          "materialId": "raw_sugar",
+          "materialName": "Refined Sugar (M30)",
+          "unit": "kg",
+          "deductedQty": 0.012,
+          "ingredientCost": 0.5,
+          "priorStock": 22
+        }
+      ],
+      "lowStockAlerts": [],
+      "customerNote": ""
+    }
+  ],
+  "invoices": [
+    {
+      "id": "bill_1795446749794_o8yu",
+      "vendorName": "Gultekdi Market Yard Wholesale Merchants",
+      "invoiceNumber": "MYP-8842-824",
+      "invoiceDate": "2026-11-23",
+      "subtotal": 6190,
+      "taxAmount": 309.5,
+      "totalAmount": 6499.5,
+      "confidenceScore": 0.98,
+      "status": "committed",
+      "items": [
+        {
+          "id": "item_cssz7",
+          "inventoryId": "raw_urad_dal",
+          "matchedInventoryName": "Urad Dal (Premium)",
+          "name": "Urad Dal (Premium)",
+          "quantity": 25,
+          "unit": "kg",
+          "unitPrice": 112,
+          "total": 2800,
+          "isMatched": true
+        },
+        {
+          "id": "item_fmb4v",
+          "inventoryId": "raw_cooking_oil",
+          "matchedInventoryName": "Fortune Sunflower Oil",
+          "name": "Fortune Sunflower Oil",
+          "quantity": 15,
+          "unit": "litre",
+          "unitPrice": 132,
+          "total": 1980,
+          "isMatched": true
+        },
+        {
+          "id": "item_9rm5g",
+          "inventoryId": "raw_rice_idli",
+          "matchedInventoryName": "Kolam Idli Rice",
+          "name": "Kolam Idli Rice",
+          "quantity": 30,
+          "unit": "kg",
+          "unitPrice": 47,
+          "total": 1410,
+          "isMatched": true
+        }
+      ],
+      "committedAt": "2026-11-23T15:12:29.802Z",
+      "committedItems": [
+        {
+          "inventoryId": "raw_urad_dal",
+          "name": "Urad Dal (Premium)",
+          "addedQuantity": 25,
+          "newStock": 43.4,
+          "newUnitCost": 113.27
+        },
+        {
+          "inventoryId": "raw_cooking_oil",
+          "name": "Fortune Sunflower Oil",
+          "addedQuantity": 15,
+          "newStock": 29.17,
+          "newUnitCost": 133.46
+        },
+        {
+          "inventoryId": "raw_rice_idli",
+          "name": "Kolam Idli Rice",
+          "addedQuantity": 30,
+          "newStock": 54,
+          "newUnitCost": 47.44
+        }
+      ]
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "audit_1795446749828_v7wo",
+      "timestamp": "2026-11-23T15:12:29.828Z",
+      "dateFormatted": "23 Nov 2026",
+      "auditor": "Shopkeeper Arun",
+      "totalItemsAudited": 1,
+      "totalShrinkageLoss": 56.63,
+      "totalSurplusGain": 0,
+      "netImpact": -56.63,
+      "variances": [
+        {
+          "inventoryId": "raw_urad_dal",
+          "name": "Urad Dal (Premium)",
+          "category": "Grains & Pulses",
+          "unit": "kg",
+          "costPerUnit": 113.27,
+          "theoreticalStock": 43.4,
+          "countedStock": 42.9,
+          "variance": -0.5,
+          "varianceValue": -56.63,
+          "status": "SHRINKAGE",
+          "notes": "Cooking spillage"
+        }
+      ]
+    }
+  ]
+}

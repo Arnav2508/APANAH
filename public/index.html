@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apanah — Back office for small shops and food counters</title>
+  <meta name="description" content="Every sale updates payments, stock and profit. No typing. Built for Pune retail and food counters.">
+  
+  <!-- Typography: Newsreader (Editorial Serif) & Plus Jakarta Sans (Humanist Utility) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN for utility grid -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Newsreader', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Lucide Icons (Functional icons only) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen flex flex-col font-sans">
+
+  <!-- Top Institutional & Shop Header -->
+  <header class="bg-white border-b border-[#D8D3C7] sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Left: Identity & Ground Truth -->
+      <div class="flex items-baseline space-x-3">
+        <h1 class="font-serif text-2xl font-bold tracking-tight text-[#141923]">Apanah</h1>
+        <span class="text-xs text-[#525B6C]">
+          Shree Ganesh Fast Food & Kirana · Swargate, Pune
+        </span>
+      </div>
+
+      <!-- Right: Real-time Ledger Summary -->
+      <div class="flex items-center space-x-6 text-xs text-[#525B6C]">
+        <div>
+          <span class="text-[#7D8696] block text-xs">Today's sales</span>
+          <span id="ticker-sales" class="font-semibold text-sm text-[#141923] tabular">₹0.00</span>
+        </div>
+        <div class="h-6 w-px bg-[#D8D3C7]"></div>
+        <div>
+          <span class="text-[#7D8696] block text-xs">Net profit</span>
+          <span id="ticker-profit" class="font-semibold text-sm text-[#185E39] tabular">₹0.00</span>
+        </div>
+        <div class="h-6 w-px bg-[#D8D3C7]"></div>
+        <div>
+          <span class="text-[#7D8696] block text-xs">Low stock</span>
+          <span id="ticker-alerts" class="font-semibold text-sm text-[#C8511B]">0 items</span>
+        </div>
+        <div class="h-6 w-px bg-[#D8D3C7]"></div>
+        <button id="btn-seed-reset" class="text-link text-xs">Reset data</button>
+      </div>
+
+    </div>
+
+    <!-- Navigation Strip -->
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 flex space-x-1 border-t border-[#ECE9E1] overflow-x-auto" aria-label="Main Navigation">
+      <button class="nav-tab active" data-target="view-pos">Counter register</button>
+      <button class="nav-tab" data-target="view-ocr">Supplier bills</button>
+      <button class="nav-tab" data-target="view-dashboard">Daily profit & loss</button>
+      <button class="nav-tab" data-target="view-inventory">Stock & recipes</button>
+      <button class="nav-tab" data-target="view-audit">Weekly count</button>
+      <button class="nav-tab" data-target="view-export">Accounting export</button>
+    </nav>
+  </header>
+
+  <!-- Main Viewport -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 pb-16">
+    
+    <!-- Toast notifications -->
+    <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 1: COUNTER REGISTER (POS & ATOMIC BOM DEPLETION)     -->
+    <!-- ======================================================== -->
+    <section id="view-pos" class="view-panel">
+      
+      <!-- Context Statement -->
+      <div class="mb-4">
+        <p class="text-xs text-[#525B6C]">
+          Tap dishes to record sales. Ingredients deduct automatically based on recipe weight (e.g., 20 plates of medu vada deducts 1 kg of urad dal).
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Left: Dish Catalogue (7 cols) -->
+        <div class="lg:col-span-7 xl:col-span-8 space-y-3">
+          
+          <!-- Category Filter Bar & Search -->
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-[#D8D3C7]">
+            <div id="category-pills" class="flex items-center gap-1.5 overflow-x-auto">
+              <button class="cat-pill active" data-cat="all">All items</button>
+              <button class="cat-pill" data-cat="Breakfast & Snacks">Breakfast & snacks</button>
+              <button class="cat-pill" data-cat="Beverages">Beverages</button>
+              <button class="cat-pill" data-cat="Packaged Retail">Packaged retail</button>
+            </div>
+            <div class="w-full sm:w-48">
+              <input type="text" id="pos-search" placeholder="Filter dishes..." class="w-full bg-white border border-[#D8D3C7] px-2.5 py-1 text-xs text-[#141923] placeholder-[#7D8696] focus:border-[#141923] focus:outline-none">
+            </div>
+          </div>
+
+          <!-- Items Grid -->
+          <div id="pos-menu-grid" class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-2.5">
+            <!-- Dynamically populated via app.js -->
+          </div>
+
+        </div>
+
+        <!-- Right: Current Bill & One Primary Action (Focal Point) -->
+        <div class="lg:col-span-5 xl:col-span-4">
+          <div class="ledger-panel p-4 space-y-4">
+            
+            <div class="flex items-center justify-between border-b border-[#ECE9E1] pb-2">
+              <h2 class="font-semibold text-sm text-[#141923]">Current bill</h2>
+              <button id="btn-clear-cart" class="text-link text-xs text-[#7D8696]">Clear</button>
+            </div>
+
+            <!-- Cart Items -->
+            <div id="pos-cart-list" class="space-y-2 min-h-[140px] max-h-[280px] overflow-y-auto">
+              <!-- Dynamically populated -->
+            </div>
+
+            <!-- Recipe Deduction Preview -->
+            <div id="cart-bom-preview" class="border-t border-[#ECE9E1] pt-2 text-xs text-[#525B6C] space-y-1 hidden">
+              <div class="flex justify-between font-medium">
+                <span>Stock deduction preview:</span>
+                <span id="bom-est-cogs" class="text-[#141923] font-semibold">COGS: ₹0.00</span>
+              </div>
+              <p id="bom-deduction-summary" class="text-[12px] text-[#525B6C]"></p>
+            </div>
+
+            <!-- Summary Calculations -->
+            <div class="border-t border-[#D8D3C7] pt-3 space-y-2 text-xs">
+              <div class="flex justify-between text-[#525B6C]">
+                <span>Gross margin</span>
+                <span id="pos-margin" class="text-[#185E39] font-medium">₹0.00 (0%)</span>
+              </div>
+              <div class="flex justify-between items-baseline pt-1">
+                <span class="text-sm font-semibold text-[#141923]">Total amount</span>
+                <span id="pos-total" class="font-serif text-2xl font-bold text-[#141923] tabular">₹0.00</span>
+              </div>
+            </div>
+
+            <!-- Payment Mode Selector -->
+            <div class="pt-2 border-t border-[#ECE9E1]">
+              <span class="block text-xs text-[#525B6C] mb-1.5">Payment mode</span>
+              <div class="grid grid-cols-3 gap-1.5">
+                <button type="button" class="pay-mode-btn active" data-mode="UPI">UPI QR</button>
+                <button type="button" class="pay-mode-btn" data-mode="CASH">Cash</button>
+                <button type="button" class="pay-mode-btn" data-mode="CARD">Card</button>
+              </div>
+            </div>
+
+            <!-- THE ONE FOCAL POINT IN THIS VIEW: Primary Action -->
+            <button id="btn-checkout" disabled class="btn-primary w-full py-2.5 text-sm">
+              Record sale and deduct stock
+            </button>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 2: SUPPLIER BILLS (ZERO-TYPING INGESTION)           -->
+    <!-- ======================================================== -->
+    <section id="view-ocr" class="view-panel hidden space-y-4">
+      
+      <div>
+        <h2 class="font-serif text-xl font-bold text-[#141923]">Supplier bill intake</h2>
+        <p class="text-xs text-[#525B6C] mt-0.5">
+          Photograph or upload a supplier invoice. Line items and rates are extracted and matched to your stock ledger.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Left: Upload or Select Sample (4 cols) -->
+        <div class="lg:col-span-4 space-y-3">
+          <div class="ledger-panel p-4 space-y-3">
+            
+            <h3 class="text-xs font-semibold text-[#141923]">Upload bill file</h3>
+
+            <div id="dropzone-area" class="border border-dashed border-[#D8D3C7] hover:border-[#141923] p-4 text-center cursor-pointer bg-[#F7F5F0]">
+              <input type="file" id="bill-file-input" accept="image/*" class="hidden">
+              <p class="text-xs font-medium text-[#141923]">Choose file or take picture</p>
+              <p class="text-[11px] text-[#7D8696] mt-0.5">JPG, PNG up to 10MB</p>
+            </div>
+
+            <div class="pt-2 border-t border-[#ECE9E1] space-y-2">
+              <span class="block text-xs font-medium text-[#525B6C]">Or test with pilot wholesale receipts:</span>
+              
+              <div class="space-y-1.5">
+                <button type="button" class="btn-sample-bill w-full text-left p-2.5 bg-white hover:bg-[#F0EDE5] border border-[#D8D3C7] text-xs transition flex justify-between items-center" data-sample="kirana_oil">
+                  <div>
+                    <span class="font-semibold block text-[#141923]">Gultekdi Market Yard</span>
+                    <span class="text-[11px] text-[#525B6C]">Urad Dal 25kg, Oil 15L, Rice 30kg</span>
+                  </div>
+                  <span class="font-semibold tabular text-[#141923]">₹6,190</span>
+                </button>
+
+                <button type="button" class="btn-sample-bill w-full text-left p-2.5 bg-white hover:bg-[#F0EDE5] border border-[#D8D3C7] text-xs transition flex justify-between items-center" data-sample="dairy">
+                  <div>
+                    <span class="font-semibold block text-[#141923]">Katraj Dairy Route Slip</span>
+                    <span class="text-[11px] text-[#525B6C]">Amul Milk 20L, Butter 15 packs</span>
+                  </div>
+                  <span class="font-semibold tabular text-[#141923]">₹1,860</span>
+                </button>
+
+                <button type="button" class="btn-sample-bill w-full text-left p-2.5 bg-white hover:bg-[#F0EDE5] border border-[#D8D3C7] text-xs transition flex justify-between items-center" data-sample="bakery">
+                  <div>
+                    <span class="font-semibold block text-[#141923]">Modern Bakery & Farsan</span>
+                    <span class="text-[11px] text-[#525B6C]">Fresh Pav 100 pcs, Farsan 8kg</span>
+                  </div>
+                  <span class="font-semibold tabular text-[#141923]">₹1,320</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right: Verification Card (8 cols) -->
+        <div class="lg:col-span-8">
+          <div id="ocr-review-container" class="ledger-panel p-4 min-h-[320px]">
+            
+            <div id="ocr-empty-state" class="py-12 text-center text-[#7D8696] space-y-1 text-xs">
+              <p class="font-medium text-[#141923]">No bill selected</p>
+              <p>Upload an invoice photo or click one of the Pune wholesale receipts on the left.</p>
+            </div>
+
+            <div id="ocr-active-card" class="hidden space-y-4">
+              <!-- Dynamically populated via app.js -->
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 3: DAILY PROFIT & LOSS (EXECUTIVE TELEMETRY)         -->
+    <!-- ======================================================== -->
+    <section id="view-dashboard" class="view-panel hidden space-y-6">
+      
+      <div>
+        <h2 class="font-serif text-xl font-bold text-[#141923]">Today's profit and loss</h2>
+        <p class="text-xs text-[#525B6C] mt-0.5">
+          Real-time margin tracking. COGS is calculated directly from current supplier invoice batch prices.
+        </p>
+      </div>
+
+      <!-- Core Financial Table -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        
+        <div class="ledger-panel p-4">
+          <span class="text-xs text-[#7D8696] block">Gross sales</span>
+          <span id="dash-sales" class="font-serif text-2xl font-bold text-[#141923] tabular mt-1 block">₹0.00</span>
+          <span class="text-xs text-[#525B6C] mt-1 block">
+            <span id="dash-orders-count">0 orders</span> · <span id="dash-aov">Avg ₹0</span>
+          </span>
+        </div>
+
+        <div class="ledger-panel p-4">
+          <span class="text-xs text-[#7D8696] block">Cost of goods sold (COGS)</span>
+          <span id="dash-cogs" class="font-serif text-2xl font-bold text-[#525B6C] tabular mt-1 block">₹0.00</span>
+          <span class="text-xs text-[#525B6C] mt-1 block">Raw material cost deducted</span>
+        </div>
+
+        <!-- THE FOCAL POINT IN THIS VIEW: Net Profit -->
+        <div class="ledger-panel p-4 border-l-4 border-l-[#C8511B]">
+          <span class="text-xs text-[#7D8696] block">Net operating profit</span>
+          <span id="dash-profit" class="font-serif text-2xl font-bold text-[#185E39] tabular mt-1 block">₹0.00</span>
+          <span id="dash-margin-pct" class="text-xs font-semibold text-[#185E39] mt-1 block">0% Gross Margin</span>
+        </div>
+
+        <div class="ledger-panel p-4">
+          <span class="text-xs text-[#7D8696] block">Total on-hand stock value</span>
+          <span id="dash-stock-val" class="font-serif text-2xl font-bold text-[#141923] tabular mt-1 block">₹0.00</span>
+          <span id="dash-low-stock-count" class="text-xs text-[#C8511B] mt-1 block">0 items below threshold</span>
+        </div>
+
+      </div>
+
+      <!-- Breakdown Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Payment Mode Ledger (4 cols) -->
+        <div class="lg:col-span-4 ledger-panel p-4 space-y-3">
+          <h3 class="text-xs font-semibold text-[#141923]">Payment mode split</h3>
+          
+          <div class="space-y-2 text-xs">
+            <div class="flex justify-between py-1 border-b border-[#ECE9E1]">
+              <span class="text-[#525B6C]">UPI QR code</span>
+              <span id="pay-upi-stat" class="font-medium tabular text-[#141923]">₹0.00 (0%)</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-[#ECE9E1]">
+              <span class="text-[#525B6C]">Cash in hand</span>
+              <span id="pay-cash-stat" class="font-medium tabular text-[#141923]">₹0.00 (0%)</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-[#ECE9E1]">
+              <span class="text-[#525B6C]">Card / Terminal</span>
+              <span id="pay-card-stat" class="font-medium tabular text-[#141923]">₹0.00 (0%)</span>
+            </div>
+          </div>
+
+          <div id="dash-low-stock-box" class="pt-2 border-t border-[#ECE9E1]">
+            <span class="text-xs font-semibold text-[#C8511B] block mb-1">Reorder warnings:</span>
+            <div id="dash-alerts-list" class="space-y-1 text-xs">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Top dishes table (8 cols) -->
+        <div class="lg:col-span-8 ledger-panel p-4 space-y-3">
+          <h3 class="text-xs font-semibold text-[#141923]">Dishes sold today and profit contribution</h3>
+          <div class="overflow-x-auto">
+            <table class="ledger-table">
+              <thead>
+                <tr>
+                  <th>Dish</th>
+                  <th>Quantity</th>
+                  <th>Revenue</th>
+                  <th>Profit</th>
+                  <th>Margin</th>
+                </tr>
+              </thead>
+              <tbody id="dash-top-items-tbody">
+                <tr>
+                  <td colspan="5" class="text-center text-[#7D8696] py-6">No sales recorded today yet.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Recent Transactions Table -->
+      <div class="ledger-panel p-4 space-y-2">
+        <h3 class="text-xs font-semibold text-[#141923]">Recent sales entries</h3>
+        <div id="dash-recent-orders" class="space-y-1.5 max-h-48 overflow-y-auto">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 4: STOCK & RECIPES (BOM INSPECTOR)                  -->
+    <!-- ======================================================== -->
+    <section id="view-inventory" class="view-panel hidden space-y-4">
+      
+      <div>
+        <h2 class="font-serif text-xl font-bold text-[#141923]">Inventory and recipe formulas</h2>
+        <p class="text-xs text-[#525B6C] mt-0.5">
+          Raw ingredients are updated when you upload bills and deducted when sales happen.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Inventory Table (7 cols) -->
+        <div class="lg:col-span-7 ledger-panel p-4 space-y-3">
+          <h3 class="text-xs font-semibold text-[#141923]">On-hand ingredients & retail items</h3>
+          <div class="overflow-x-auto">
+            <table class="ledger-table">
+              <thead>
+                <tr>
+                  <th>Item name</th>
+                  <th>Current stock</th>
+                  <th>Purchase rate</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="inventory-table-tbody">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Recipe BOM Breakdown (5 cols) -->
+        <div class="lg:col-span-5 ledger-panel p-4 space-y-3">
+          <h3 class="text-xs font-semibold text-[#141923]">Recipe breakdown</h3>
+          
+          <div>
+            <label for="recipe-select-dish" class="block text-xs text-[#525B6C] mb-1">Select dish formula:</label>
+            <select id="recipe-select-dish" class="w-full bg-white border border-[#D8D3C7] px-2.5 py-1.5 text-xs text-[#141923] focus:outline-none focus:border-[#141923]">
+              <!-- Populated via JS -->
+            </select>
+          </div>
+
+          <div id="recipe-details-card" class="bg-[#F7F5F0] border border-[#D8D3C7] p-3 text-xs space-y-3">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 5: WEEKLY AUDIT (PHYSICAL WEIGH-IN RECONCILIATION)   -->
+    <!-- ======================================================== -->
+    <section id="view-audit" class="view-panel hidden space-y-4">
+      
+      <div>
+        <h2 class="font-serif text-xl font-bold text-[#141923]">Weekly physical count reconciliation</h2>
+        <p class="text-xs text-[#525B6C] mt-0.5">
+          Enter weighed stock to calibrate for kitchen spillage, boiling loss, or measurement drift.
+        </p>
+      </div>
+
+      <div class="ledger-panel p-4 space-y-4">
+        <div class="overflow-x-auto">
+          <table class="ledger-table">
+            <thead>
+              <tr>
+                <th>Ingredient</th>
+                <th>System recorded</th>
+                <th class="w-32">Physical weighed</th>
+                <th>Variance</th>
+                <th>Loss or gain</th>
+              </tr>
+            </thead>
+            <tbody id="audit-table-tbody">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="flex items-center justify-between pt-3 border-t border-[#D8D3C7]">
+          <div class="text-xs">
+            <span class="text-[#525B6C]">Estimated weekly shrinkage:</span>
+            <span id="audit-total-loss" class="font-semibold text-[#9B2829] tabular ml-1">₹0.00</span>
+          </div>
+          <button id="btn-submit-audit" class="btn-primary text-xs py-2 px-4">
+            Commit count and calibrate stock
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 6: ACCOUNTING EXPORT (TALLY / VYAPAR)                -->
+    <!-- ======================================================== -->
+    <section id="view-export" class="view-panel hidden space-y-4">
+      
+      <div>
+        <h2 class="font-serif text-xl font-bold text-[#141923]">Export for accounting</h2>
+        <p class="text-xs text-[#525B6C] mt-0.5">
+          Download records in standard Indian formats for your CA or current software.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        
+        <div class="ledger-panel p-4 space-y-3 flex flex-col justify-between">
+          <div class="space-y-1">
+            <h3 class="font-semibold text-sm text-[#141923]">Tally Prime XML</h3>
+            <p class="text-xs text-[#525B6C]">
+              Day Book XML with sales vouchers, payment ledgers, and debit/credit balances for Tally Prime and ERP 9.
+            </p>
+          </div>
+          <a href="/api/export/tally" target="_blank" class="btn-secondary text-center block text-xs">
+            Download Tally XML
+          </a>
+        </div>
+
+        <div class="ledger-panel p-4 space-y-3 flex flex-col justify-between">
+          <div class="space-y-1">
+            <h3 class="font-semibold text-sm text-[#141923]">Vyapar Sales CSV</h3>
+            <p class="text-xs text-[#525B6C]">
+              Daily customer sales entries, item quantities, and margins formatted for Vyapar.
+            </p>
+          </div>
+          <a href="/api/export/vyapar-sales" target="_blank" class="btn-secondary text-center block text-xs">
+            Download Vyapar sales CSV
+          </a>
+        </div>
+
+        <div class="ledger-panel p-4 space-y-3 flex flex-col justify-between">
+          <div class="space-y-1">
+            <h3 class="font-semibold text-sm text-[#141923]">Vyapar Purchases CSV</h3>
+            <p class="text-xs text-[#525B6C]">
+              Supplier invoices and stock purchase amounts logged through bill photo intake.
+            </p>
+          </div>
+          <a href="/api/export/vyapar-purchases" target="_blank" class="btn-secondary text-center block text-xs">
+            Download purchases CSV
+          </a>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Grounded Footer -->
+  <footer class="border-t border-[#D8D3C7] bg-white py-3 px-4 sm:px-6 text-xs text-[#7D8696] mt-auto">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1">
+      <div>
+        <span>Apanah Prototype · Pre-seed initiative (Pune)</span>
+      </div>
+      <div>
+        <span>Arnav Ghatole and Arinjay Pawar · Vishwakarma Institute of Technology, Pune</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
